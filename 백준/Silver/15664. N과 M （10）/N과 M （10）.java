@@ -1,0 +1,56 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static int N, M;
+    static boolean[] visited;
+    static int[] arr;
+    static int[] result;
+    static StringBuilder sb = new StringBuilder();
+
+    static void dfs(int depth, int start) {
+        if(depth == M) {
+
+            for(int i=0;i<M;i++) {
+                sb.append(result[i]).append(" ");
+            }
+            sb.append("\n");
+
+            return;
+        }
+        int pre = 0;
+        for(int i=start;i<N;i++) {
+            if(!visited[i] && pre != arr[i]) {
+                result[depth] = arr[i];
+                visited[i] = true;
+                pre = arr[i];
+                dfs(depth+1, i+1);
+                result[depth] = 0;
+                visited[i] = false;
+            }
+        }
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        visited = new boolean[N];
+        arr = new int[N];
+        result = new int[M];
+        st = new StringTokenizer(br.readLine());
+        for(int i=0;i<N;i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(arr);
+
+        dfs(0, 0);
+        System.out.println(sb.toString());
+    }
+}
